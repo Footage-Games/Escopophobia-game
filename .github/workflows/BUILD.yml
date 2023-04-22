@@ -1,0 +1,25 @@
+name: BUILD GAME
+
+on:
+  push:
+    branches: [ "main" ]
+    
+jobs:
+  BuildAndroid:
+    runs-on: ubuntu-lastest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: install packages
+      run: |
+        sudo add-apt-repository ppa:haxe/releases -y
+        sudo apt-get update
+        sudo apt-get install haxe -y
+        mkdir ~/haxelib
+        haxelib setup ~/haxelib
+        haxelib install lime
+        haxelib install openfl
+
+    - name: build APK
+      run: lime test android
